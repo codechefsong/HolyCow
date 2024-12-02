@@ -5,6 +5,7 @@ contract Cow {
   address public immutable owner;
   uint256 public happyPoint;
   uint256 public timeBorn;
+  uint256 public lastTimeCowAte;
 
   modifier isOwner() {
     require(msg.sender == owner, "Not the Owner");
@@ -14,20 +15,26 @@ contract Cow {
   constructor(address _owner) {
     owner = _owner;
     timeBorn = block.timestamp;
+    lastTimeCowAte = block.timestamp;
   }
 
   receive() external payable {}
 
-  function withdraw() isOwner public {
+  function feedTheCow() isOwner external {
+    happyPoint = 10;
+    lastTimeCowAte = block.timestamp;
+  }
+
+  function withdraw() isOwner external {
     (bool success,) = owner.call{value: address(this).balance}("");
     require(success, "Failed to send Ether");
   }
 
-  function getHappyPoint() public view returns (uint256){
+  function getHappyPoint() external view returns (uint256){
     return happyPoint;
   }
 
-  function getTimeBorn() public view returns (uint256){
+  function getTimeBorn() external view returns (uint256){
     return timeBorn;
   }
 }
