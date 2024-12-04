@@ -22,6 +22,12 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
   const { deployer } = await hre.getNamedAccounts();
   const { deploy } = hre.deployments;
 
+  await deploy("M000Token", {
+    from: deployer,
+    log: true,
+    autoMine: true,
+  });
+
   await deploy("CowFactory", {
     from: deployer,
     log: true,
