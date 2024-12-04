@@ -1,6 +1,6 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
-// import { Contract } from "ethers";
+import { Contract } from "ethers";
 
 /**
  * Deploys a contract named "YourContract" using the deployer account and
@@ -28,8 +28,11 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
     autoMine: true,
   });
 
+  const M000Token = await hre.ethers.getContract<Contract>("M000Token", deployer);
+
   await deploy("CowFactory", {
     from: deployer,
+    args: [await M000Token.getAddress()],
     log: true,
     autoMine: true,
   });

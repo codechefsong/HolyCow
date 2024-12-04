@@ -1,22 +1,57 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import type { NextPage } from "next";
+import { useAccount } from "wagmi";
+import {
+  useScaffoldReadContract,
+  useScaffoldWatchContractEvent,
+  useScaffoldWriteContract,
+} from "~~/hooks/scaffold-eth";
 
-const SpinWheel = () => {
+const SpinWheel: NextPage = () => {
+  const { address } = useAccount();
+
   const [highlightedSections, setHighlightedSections] = useState([]);
   const [winningSection, setWinningSection] = useState(null);
   const [showOnlyWinningColor, setShowOnlyWinningColor] = useState(false);
 
-  const wheelSections = [
-    'Prize 1', 
-    'Prize 2', 
-    'Prize 3', 
-    'Prize 4', 
-    'Prize 5', 
-    'Prize 6'
-  ];
+  const wheelSections = ["Prize 1", "Prize 2", "Prize 3", "Prize 4", "Prize 5", "Prize 6"];
 
-  const spinWheel = () => {
+  const { data: mooTokenBalance } = useScaffoldReadContract({
+    contractName: "M000Token",
+    functionName: "balanceOf",
+    args: [address],
+  });
+
+  const { writeContractAsync: Game } = useScaffoldWriteContract("CowFactory");
+
+  useScaffoldWatchContractEvent({
+    contractName: "CowFactory",
+    eventName: "SpinWheelResult",
+    onLogs: logs => {
+      logs.map(log => {
+        const { player, wheelNumber } = log.args;
+        console.log(player, wheelNumber);
+        if (address === player) {
+          // @ts-ignore
+          setWinningSection(+wheelNumber?.toString() - 1);
+          setShowOnlyWinningColor(true);
+        }
+      });
+    },
+  });
+
+  const spinWheel = async () => {
+    try {
+      await Game({
+        functionName: "spinWheel",
+      });
+
+    } catch (e) {
+      console.error("Error spinning the wheel", e);
+    }
+
     setHighlightedSections([]);
     setWinningSection(null);
     setShowOnlyWinningColor(false);
@@ -26,39 +61,32 @@ const SpinWheel = () => {
       highlightSequence.push(i);
     }
 
-    const winningIndex = Math.floor(Math.random() * wheelSections.length);
-
     highlightSequence.forEach((sectionIndex, index) => {
       setTimeout(() => {
+        // @ts-ignore
         setHighlightedSections(prev => [...prev, sectionIndex]);
-        
-        if (index === highlightSequence.length - 1) {
-          setTimeout(() => {
-            setWinningSection(winningIndex);
-            
-            setTimeout(() => {
-              setShowOnlyWinningColor(true);
-            }, 2000);
-          }, 500);
-        }
       }, index * 200);
     });
   };
 
-  const getBackgroundClass = (index) => {
+  // @ts-ignore
+  const getBackgroundClass = index => {
     if (showOnlyWinningColor) {
-      return index === winningSection ? 'bg-green-500 text-white' : 'bg-white bg-opacity-20 text-gray-500';
+      return index === winningSection ? "bg-green-500 text-white" : "bg-white bg-opacity-20 text-gray-500";
     }
     
     if (highlightedSections.includes(index)) {
-      return 'bg-yellow-500 text-white';
+      return "bg-yellow-500 text-white";
     }
     
-    return 'bg-white bg-opacity-20 text-gray-500';
+    return "bg-white bg-opacity-20 text-gray-500";
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+      <div className="text-xl mb-10">
+        M00 Token: {mooTokenBalance?.toString()}
+      </div>
       <div className="relative w-80 h-80">
         <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 shadow-xl">
           {wheelSections.map((section, index) => {
@@ -71,7 +99,7 @@ const SpinWheel = () => {
                 className="absolute w-full h-full"
                 style={{
                   transform: `rotate(${rotationAngle}deg)`,
-                  transformOrigin: 'center center'
+                  transformOrigin: "center center"
                 }}
               >
                 <div 
@@ -80,8 +108,8 @@ const SpinWheel = () => {
                     ${getBackgroundClass(index)}`}
                   style={{
                     transform: `rotate(90deg) translateX(120px)`,
-                    width: '120px',
-                    textAlign: 'center'
+                    width: "120px",
+                    textAlign: "center"
                   }}
                 >
                   {section}
