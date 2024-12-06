@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { formatEther } from "viem";
 import type { NextPage } from "next";
+import { formatEther } from "viem";
 import { useAccount } from "wagmi";
 import {
   useScaffoldReadContract,

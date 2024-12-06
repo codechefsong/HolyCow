@@ -6,6 +6,7 @@ contract Cow {
   uint256 public happyPoint;
   uint256 public timeBorn;
   uint256 public lastTimeCowAte;
+  bool public isSick;
 
   modifier isOwner() {
     require(msg.sender == owner, "Not the Owner");
@@ -23,6 +24,10 @@ contract Cow {
   function feedTheCow() isOwner external {
     happyPoint = 10;
     lastTimeCowAte = block.timestamp;
+  }
+
+  function healTheCow() isOwner external {
+    isSick = false;
   }
 
   function withdraw() isOwner external {
