@@ -74,6 +74,7 @@ const SpinWheel: NextPage = () => {
     if (showOnlyWinningColor) {
       return index === winningSection ? "bg-green-500 text-white" : "bg-white bg-opacity-20 text-gray-500";
     }
+    // @ts-ignore
     if (highlightedSections.includes(index)) {
       return "bg-yellow-500 text-white";
     }
