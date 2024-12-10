@@ -83,7 +83,8 @@ const SpinWheel: NextPage = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-      <div className="text-xl mb-10">M00 Token: {parseFloat(formatEther(BigInt(mooTokenBalance || 0n)))}</div>
+      <div className="text-xl">M00 Token: {parseFloat(formatEther(BigInt(mooTokenBalance || 0n)))}</div>
+      <p className="text-gray-500 mb-10">Spin the wheel to earn M00 Tokens. You can only spin the wheel once per day</p>
       <div className="relative w-80 h-80">
         <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 shadow-xl">
           {wheelSections.map((section, index) => {

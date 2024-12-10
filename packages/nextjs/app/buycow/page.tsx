@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import type { NextPage } from "next";
 import { CubeIcon, SparklesIcon } from "@heroicons/react/24/solid";
+import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 
 interface CowNFT {
   id: number;
@@ -14,6 +15,8 @@ interface CowNFT {
 
 const CowNFTPage: NextPage = () => {
   const [selectedCow, setSelectedCow] = useState<CowNFT | null>(null);
+
+  const { writeContractAsync: Game } = useScaffoldWriteContract("CowFactory");
 
   const cowNFTs: CowNFT[] = [
     {
@@ -39,8 +42,15 @@ const CowNFTPage: NextPage = () => {
     },
   ];
 
-  const handlePurchase = (cow: CowNFT): void => {
-    alert(`Purchasing ${cow.name} for ${cow.price} ETH`);
+  const handlePurchase = async (cow: CowNFT) => {
+    try {
+      await Game({
+        functionName: "buyCow",
+      });
+      alert(`Purchasing ${cow.name} for ${cow.price} ETH`);
+    } catch (e) {
+      console.error("Error spinning the wheel", e);
+    }
   };
 
   return (

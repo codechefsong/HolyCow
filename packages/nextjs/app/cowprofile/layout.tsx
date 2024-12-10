@@ -1,12 +1,12 @@
 import { getMetadata } from "~~/utils/scaffold-eth/getMetadata";
 
 export const metadata = getMetadata({
-  title: " Cow Marketplace",
-  description: "Buy the cow",
+  title: "My Cows",
+  description: "My cows",
 });
 
-const CowMarketplaceLayout = ({ children }: { children: React.ReactNode }) => {
+const CowProfileLayout = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
-export default CowMarketplaceLayout;
+export default CowProfileLayout;
