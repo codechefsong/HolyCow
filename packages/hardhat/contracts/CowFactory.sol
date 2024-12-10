@@ -2,11 +2,13 @@
 pragma solidity >=0.8.0 <0.9.0;
 
 import "./M000Token.sol";
+import "./MilkToken.sol";
 import "./Cow.sol";
 
 contract CowFactory {
   Cow cowContract;
   M000Token mooToken;
+  MilkToken milkToken;
 
   mapping(address => address[]) public contractaddressToPlayerCowAddresses;
 
@@ -15,8 +17,9 @@ contract CowFactory {
     uint wheelNumber
   );
 
-  constructor(address _mooTokenAddress) {
+  constructor(address _mooTokenAddress, address _milkTokenAddress) {
     mooToken = M000Token(_mooTokenAddress);
+    milkToken = MilkToken(_milkTokenAddress);
   }
 
   function buyCow() external {

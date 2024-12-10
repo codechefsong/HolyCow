@@ -30,9 +30,17 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
 
   const M000Token = await hre.ethers.getContract<Contract>("M000Token", deployer);
 
+  await deploy("MilkToken", {
+    from: deployer,
+    log: true,
+    autoMine: true,
+  });
+
+  const MilkToken = await hre.ethers.getContract<Contract>("MilkToken", deployer);
+
   await deploy("CowFactory", {
     from: deployer,
-    args: [await M000Token.getAddress()],
+    args: [await M000Token.getAddress(), await MilkToken.getAddress()],
     log: true,
     autoMine: true,
   });
