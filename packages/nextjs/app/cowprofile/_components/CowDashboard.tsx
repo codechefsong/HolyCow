@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { HandRaisedIcon, HeartIcon, HomeIcon, ShoppingBagIcon } from "@heroicons/react/24/solid";
+import { BeakerIcon, HandRaisedIcon, HeartIcon, HomeIcon, ShoppingBagIcon } from "@heroicons/react/24/solid";
 import { Address } from "~~/components/scaffold-eth";
 
 type cowContract = {
@@ -58,6 +58,8 @@ export const CowDashboard = ({ cowContractAddress }: cowContract) => {
       happiness: 15,
     });
   };
+
+  const collectMilk = () => {};
 
   return (
     <div className="p-6">
@@ -119,6 +121,13 @@ export const CowDashboard = ({ cowContractAddress }: cowContract) => {
           className="flex items-center justify-center bg-yellow-500 text-white p-3 rounded-lg hover:bg-yellow-600 transition"
         >
           <HomeIcon className="mr-2 h-5 w-5" /> Put in Barn
+        </button>
+
+        <button
+          onClick={collectMilk}
+          className="flex items-center justify-center bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition"
+        >
+          <BeakerIcon className="mr-2 h-5 w-5" /> Collect Milk
         </button>
       </div>
     </div>
