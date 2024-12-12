@@ -1,8 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
+import { useReadContract, useWriteContract } from "wagmi";
 import { BeakerIcon, HandRaisedIcon, HeartIcon, HomeIcon, ShoppingBagIcon } from "@heroicons/react/24/solid";
 import { Address } from "~~/components/scaffold-eth";
+import DeployedContracts from "~~/contracts/deployedContracts";
+import { notification } from "~~/utils/scaffold-eth";
 
 type cowContract = {
   cowContractAddress: string;
@@ -14,11 +17,21 @@ interface CowStats {
   happiness: number;
 }
 
+const CHAIN_ID = "31337";
+
 export const CowDashboard = ({ cowContractAddress }: cowContract) => {
   const [cowStats, setCowStats] = useState<CowStats>({
     health: 80,
     hunger: 50,
     happiness: 60,
+  });
+
+  const { data: hash, writeContract } = useWriteContract();
+
+  const { data: happyPoint } = useReadContract({
+    address: cowContractAddress,
+    abi: DeployedContracts[CHAIN_ID].Cow.abi,
+    functionName: "getHappyPoint",
   });
 
   const updateStats = (updates: Partial<CowStats>) => {
@@ -34,10 +47,12 @@ export const CowDashboard = ({ cowContractAddress }: cowContract) => {
   };
 
   const feedCow = () => {
-    updateStats({
-      hunger: 20,
-      happiness: 10,
+    writeContract({
+      address: cowContractAddress,
+      abi: DeployedContracts[CHAIN_ID].Cow.abi,
+      functionName: "feedTheCow",
     });
+    notification.success(hash);
   };
 
   const massageCow = () => {
@@ -59,7 +74,14 @@ export const CowDashboard = ({ cowContractAddress }: cowContract) => {
     });
   };
 
-  const collectMilk = () => {};
+  const collectMilk = async () => {
+    writeContract({
+      address: cowContractAddress,
+      abi: DeployedContracts[CHAIN_ID].Cow.abi,
+      functionName: "collectMilks",
+    });
+    notification.success(hash);
+  };
 
   return (
     <div className="p-6">
@@ -79,7 +101,7 @@ export const CowDashboard = ({ cowContractAddress }: cowContract) => {
               ${stat === "health" ? "text-green-800" : stat === "hunger" ? "text-yellow-800" : "text-blue-800"}
             `}
             >
-              {stat.charAt(0).toUpperCase() + stat.slice(1)}
+              {stat.charAt(0).toUpperCase() + stat.slice(1)} {happyPoint?.toString()}
             </p>
             <div className="w-full bg-gray-200 rounded-full h-2.5 mt-2">
               <div
@@ -87,7 +109,7 @@ export const CowDashboard = ({ cowContractAddress }: cowContract) => {
                   h-2.5 rounded-full 
                   ${stat === "health" ? "bg-green-600" : stat === "hunger" ? "bg-yellow-600" : "bg-blue-600"}
                 `}
-                style={{ width: `${cowStats[stat]}% ` }}
+                style={{ width: `${happyPoint}% ` }}
               ></div>
             </div>
           </div>

@@ -44,6 +44,13 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
     log: true,
     autoMine: true,
   });
+
+  await deploy("Cow", {
+    from: deployer,
+    args: [await M000Token.getAddress(), await MilkToken.getAddress()],
+    log: true,
+    autoMine: true,
+  });
 };
 
 export default deployYourContract;
