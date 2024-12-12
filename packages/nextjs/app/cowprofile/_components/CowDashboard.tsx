@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { useReadContract, useWriteContract } from "wagmi";
-import { BeakerIcon, HandRaisedIcon, HeartIcon, HomeIcon, ShoppingBagIcon } from "@heroicons/react/24/solid";
 import { Address } from "~~/components/scaffold-eth";
 import DeployedContracts from "~~/contracts/deployedContracts";
 import { notification } from "~~/utils/scaffold-eth";
@@ -85,9 +85,12 @@ export const CowDashboard = ({ cowContractAddress }: cowContract) => {
 
   return (
     <div className="p-6">
-      <h1 className="mb-4">
-        <Address address={cowContractAddress} />
-      </h1>
+      <div className="flex justify-between items-center mb-4">
+        <h1>
+          <Address address={cowContractAddress} />
+        </h1>
+        <Image alt="Wagyu" className="mr-2" width={30} height={30} src="/icons/wagyu.png" />
+      </div>
       <div className="grid grid-cols-3 gap-4 mb-6">
         {(Object.keys(cowStats) as Array<keyof CowStats>).map(stat => (
           <div
@@ -121,35 +124,35 @@ export const CowDashboard = ({ cowContractAddress }: cowContract) => {
           onClick={feedCow}
           className="flex items-center justify-center bg-green-500 text-white p-3 rounded-lg hover:bg-green-600 transition"
         >
-          <ShoppingBagIcon className="mr-2 h-5 w-5" /> Feed Cow
+          <Image alt="Feeding Cow" className="mr-2" width={30} height={30} src="/icons/feedingCow.png" /> Feed Cow
         </button>
 
         <button
           onClick={massageCow}
-          className="flex items-center justify-center bg-purple-500 text-white p-3 rounded-lg hover:bg-purple-600 transition"
+          className="flex items-center justify-center bg-orange-500 text-white p-3 rounded-lg hover:bg-orange-600 transition"
         >
-          <HandRaisedIcon className="mr-2 h-5 w-5" /> Massage Cow
+          <Image alt="Massage Cow" className="mr-2" width={30} height={30} src="/icons/massage.png" /> Massage Cow
         </button>
 
         <button
           onClick={cureCow}
           className="flex items-center justify-center bg-red-500 text-white p-3 rounded-lg hover:bg-red-600 transition"
         >
-          <HeartIcon className="mr-2 h-5 w-5" /> Cure Cow
+          <Image alt="Medicine Cow" className="mr-2" width={30} height={30} src="/icons/medicine.png" /> Cure Cow
         </button>
 
         <button
           onClick={putCowInBarn}
-          className="flex items-center justify-center bg-yellow-500 text-white p-3 rounded-lg hover:bg-yellow-600 transition"
+          className="flex items-center justify-center bg-purple-500 text-white p-3 rounded-lg hover:bg-purple-600 transition"
         >
-          <HomeIcon className="mr-2 h-5 w-5" /> Put in Barn
+          <Image alt="Barn Cow" className="mr-2" width={30} height={30} src="/icons/barn.png" /> Put in Barn
         </button>
 
         <button
           onClick={collectMilk}
           className="flex items-center justify-center bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition"
         >
-          <BeakerIcon className="mr-2 h-5 w-5" /> Collect Milk
+          <Image alt="Milk Cow" className="mr-2" width={30} height={30} src="/icons/milk.png" /> Collect Milk
         </button>
       </div>
     </div>
