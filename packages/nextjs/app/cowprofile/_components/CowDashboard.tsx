@@ -61,11 +61,14 @@ export const CowDashboard = ({ cowContractAddress }: cowContract) => {
     }
   };
 
-  const massageCow = () => {
-    updateStats({
-      happiness: 25,
-      health: 5,
-    });
+  const massageCow = async () => {
+    try {
+      await Game({
+        functionName: "massageTheCow",
+      });
+    } catch (e) {
+      console.error("Error massaging the cow", e);
+    }
   };
 
   const cureCow = () => {

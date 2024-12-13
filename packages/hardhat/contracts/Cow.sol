@@ -33,9 +33,14 @@ contract Cow {
   receive() external payable {}
 
   function feedTheCow() isOwner external {
+    mooToken.burn(msg.sender, 25 * 10 ** 18);
+    happyPoint += 5;
+    lastTimeCowAte = block.timestamp;
+  }
+
+  function massageTheCow() isOwner external {
     mooToken.burn(msg.sender, 20 * 10 ** 18);
     happyPoint += 10;
-    lastTimeCowAte = block.timestamp;
   }
 
   function healTheCow() isOwner external {
