@@ -30,7 +30,7 @@ contract Cow {
   receive() external payable {}
 
   function feedTheCow() isOwner external {
-    happyPoint = 10;
+    happyPoint += 10;
     lastTimeCowAte = block.timestamp;
   }
 

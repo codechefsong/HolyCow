@@ -2,10 +2,9 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { useReadContract, useWriteContract } from "wagmi";
 import { Address } from "~~/components/scaffold-eth";
-import DeployedContracts from "~~/contracts/deployedContracts";
-import { notification } from "~~/utils/scaffold-eth";
+import { useScaffoldReadContractWithContractAddress } from "~~/hooks/scaffold-eth/useScaffoldReadContractWithContractAddress";
+import { useScaffoldWriteContractWithContractAddress } from "~~/hooks/scaffold-eth/useScaffoldWriteContractWithContractAddress";
 
 type cowContract = {
   cowContractAddress: string;
@@ -17,8 +16,6 @@ interface CowStats {
   happiness: number;
 }
 
-const CHAIN_ID = "31337";
-
 export const CowDashboard = ({ cowContractAddress }: cowContract) => {
   const [cowStats, setCowStats] = useState<CowStats>({
     health: 80,
@@ -26,11 +23,12 @@ export const CowDashboard = ({ cowContractAddress }: cowContract) => {
     happiness: 60,
   });
 
-  const { data: hash, writeContract } = useWriteContract();
+  const { writeContractAsync: Game } = useScaffoldWriteContractWithContractAddress("Cow", cowContractAddress);
 
-  const { data: happyPoint } = useReadContract({
-    address: cowContractAddress,
-    abi: DeployedContracts[CHAIN_ID].Cow.abi,
+  const { data: happyPoint } = useScaffoldReadContractWithContractAddress({
+    contractName: "Cow",
+    // @ts-ignore
+    contractAddress: cowContractAddress,
     functionName: "getHappyPoint",
   });
 
@@ -46,13 +44,14 @@ export const CowDashboard = ({ cowContractAddress }: cowContract) => {
     }));
   };
 
-  const feedCow = () => {
-    writeContract({
-      address: cowContractAddress,
-      abi: DeployedContracts[CHAIN_ID].Cow.abi,
-      functionName: "feedTheCow",
-    });
-    notification.success(hash);
+  const feedCow = async () => {
+    try {
+      await Game({
+        functionName: "feedTheCow",
+      });
+    } catch (e) {
+      console.error("Error feeding the cow", e);
+    }
   };
 
   const massageCow = () => {
@@ -75,12 +74,13 @@ export const CowDashboard = ({ cowContractAddress }: cowContract) => {
   };
 
   const collectMilk = async () => {
-    writeContract({
-      address: cowContractAddress,
-      abi: DeployedContracts[CHAIN_ID].Cow.abi,
-      functionName: "collectMilks",
-    });
-    notification.success(hash);
+    try {
+      await Game({
+        functionName: "collectMilks",
+      });
+    } catch (e) {
+      console.error("Error collecting milk", e);
+    }
   };
 
   return (
