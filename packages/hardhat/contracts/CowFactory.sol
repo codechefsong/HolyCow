@@ -32,27 +32,27 @@ contract CowFactory {
     uint wheelNumber;
 
     if (randomNumber > 50) {
-      mooToken.mint(msg.sender, 1000 * 10 ** 18);
+      mooToken.mint(msg.sender, 100 * 10 ** 18);
       wheelNumber = 6;
     }
     else if(randomNumber > 40){
-      mooToken.mint(msg.sender, 500 * 10 ** 18);
+      mooToken.mint(msg.sender, 75 * 10 ** 18);
       wheelNumber = 5;
     }
     else if(randomNumber > 30){
-      mooToken.mint(msg.sender, 250 * 10 ** 18);
+      mooToken.mint(msg.sender, 50 * 10 ** 18);
       wheelNumber = 4;
     }
     else if(randomNumber > 20){
-      mooToken.mint(msg.sender, 100 * 10 ** 18);
+      mooToken.mint(msg.sender, 25 * 10 ** 18);
       wheelNumber = 3;
     }
     else if(randomNumber > 10){
-      mooToken.mint(msg.sender, 750 * 10 ** 18);
+      mooToken.mint(msg.sender, 10 * 10 ** 18);
       wheelNumber = 2;
     }
     else{
-      mooToken.mint(msg.sender, 50 * 10 ** 18);
+      mooToken.mint(msg.sender, 5 * 10 ** 18);
       wheelNumber = 1;
     }
 

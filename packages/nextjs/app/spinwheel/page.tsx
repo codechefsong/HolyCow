@@ -17,7 +17,7 @@ const SpinWheel: NextPage = () => {
   const [winningSection, setWinningSection] = useState(null);
   const [showOnlyWinningColor, setShowOnlyWinningColor] = useState(false);
 
-  const wheelSections = ["Prize 1", "Prize 2", "Prize 3", "Prize 4", "Prize 5", "Prize 6"];
+  const wheelSections = ["100 M00", "75 M00", "50 M00", "25 M00", "10 M00", "5 M00"];
 
   const { data: mooTokenBalance } = useScaffoldReadContract({
     contractName: "M000Token",
@@ -82,10 +82,10 @@ const SpinWheel: NextPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+    <div className="flex flex-col items-center min-h-screen bg-gray-100 p-6">
       <div className="text-xl">M00 Token: {parseFloat(formatEther(BigInt(mooTokenBalance || 0n)))}</div>
       <p className="text-gray-500 mb-10">Spin the wheel to earn M00 Tokens. You can only spin the wheel once per day</p>
-      <div className="relative w-80 h-80">
+      <div className="relative w-80 h-80 mb-4">
         <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 shadow-xl">
           {wheelSections.map((section, index) => {
             const sectionAngle = 360 / wheelSections.length;
@@ -105,7 +105,7 @@ const SpinWheel: NextPage = () => {
                     ${getBackgroundClass(index)}`}
                   style={{
                     transform: `rotate(90deg) translateX(120px)`,
-                    width: "120px",
+                    width: "110px",
                     textAlign: "center",
                   }}
                 >
