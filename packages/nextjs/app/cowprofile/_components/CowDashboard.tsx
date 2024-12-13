@@ -32,6 +32,13 @@ export const CowDashboard = ({ cowContractAddress }: cowContract) => {
     functionName: "getHappyPoint",
   });
 
+  const { data: isSick } = useScaffoldReadContractWithContractAddress({
+    contractName: "Cow",
+    // @ts-ignore
+    contractAddress: cowContractAddress,
+    functionName: "getIsSick",
+  });
+
   const updateStats = (updates: Partial<CowStats>) => {
     setCowStats(prevStats => ({
       ...prevStats,
@@ -92,31 +99,26 @@ export const CowDashboard = ({ cowContractAddress }: cowContract) => {
         <Image alt="Wagyu" className="mr-2" width={30} height={30} src="/icons/wagyu.png" />
       </div>
       <div className="grid grid-cols-3 gap-4 mb-6">
-        {(Object.keys(cowStats) as Array<keyof CowStats>).map(stat => (
-          <div
-            key={stat}
-            className={`
-              p-4 rounded-lg ${stat === "health" ? "bg-green-100" : stat === "hunger" ? "bg-yellow-100" : "bg-blue-100"}
-            `}
-          >
-            <p
-              className={`text-sm 
-              ${stat === "health" ? "text-green-800" : stat === "hunger" ? "text-yellow-800" : "text-blue-800"}
-            `}
-            >
-              {stat.charAt(0).toUpperCase() + stat.slice(1)} {happyPoint?.toString()}
-            </p>
-            <div className="w-full bg-gray-200 rounded-full h-2.5 mt-2">
-              <div
-                className={`
-                  h-2.5 rounded-full 
-                  ${stat === "health" ? "bg-green-600" : stat === "hunger" ? "bg-yellow-600" : "bg-blue-600"}
-                `}
-                style={{ width: `${happyPoint}% ` }}
-              ></div>
-            </div>
+        <div className="p-4 rounded-lg bg-green-100">
+          <p className="text-sm text-green-800">Health</p>
+          <div className="w-full bg-gray-200 rounded-full h-2.5 mt-2">
+            <div className="h-2.5 rounded-full bg-green-600" style={{ width: isSick ? "20%" : "100%" }}></div>
           </div>
-        ))}
+        </div>
+
+        <div className="p-4 rounded-lg bg-yellow-100">
+          <p className="text-sm text-yellow-800">Hunger {happyPoint?.toString()}</p>
+          <div className="w-full bg-gray-200 rounded-full h-2.5 mt-2">
+            <div className="h-2.5 rounded-full bg-yellow-600" style={{ width: `${happyPoint}% ` }}></div>
+          </div>
+        </div>
+
+        <div className="p-4 rounded-lg bg-blue-100">
+          <p className="text-sm text-blue-800">Happiness {happyPoint?.toString()}</p>
+          <div className="w-full bg-gray-200 rounded-full h-2.5 mt-2">
+            <div className="h-2.5 rounded-full bg-blue-600" style={{ width: `${happyPoint}% ` }}></div>
+          </div>
+        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
