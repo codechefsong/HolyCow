@@ -1,6 +1,5 @@
 "use client";
 
-import React, { useState } from "react";
 import Image from "next/image";
 import { Address } from "~~/components/scaffold-eth";
 import { useScaffoldReadContractWithContractAddress } from "~~/hooks/scaffold-eth/useScaffoldReadContractWithContractAddress";
@@ -10,19 +9,7 @@ type cowContract = {
   cowContractAddress: string;
 };
 
-interface CowStats {
-  health: number;
-  hunger: number;
-  happiness: number;
-}
-
 export const CowDashboard = ({ cowContractAddress }: cowContract) => {
-  const [cowStats, setCowStats] = useState<CowStats>({
-    health: 80,
-    hunger: 50,
-    happiness: 60,
-  });
-
   const { writeContractAsync: Game } = useScaffoldWriteContractWithContractAddress("Cow", cowContractAddress);
 
   const { data: happyPoint } = useScaffoldReadContractWithContractAddress({
@@ -38,18 +25,6 @@ export const CowDashboard = ({ cowContractAddress }: cowContract) => {
     contractAddress: cowContractAddress,
     functionName: "getIsSick",
   });
-
-  const updateStats = (updates: Partial<CowStats>) => {
-    setCowStats(prevStats => ({
-      ...prevStats,
-      ...Object.fromEntries(
-        Object.entries(updates).map(([key, value]) => [
-          key,
-          Math.min(Math.max(prevStats[key as keyof CowStats] + value, 0), 100),
-        ]),
-      ),
-    }));
-  };
 
   const feedCow = async () => {
     try {
@@ -71,17 +46,17 @@ export const CowDashboard = ({ cowContractAddress }: cowContract) => {
     }
   };
 
-  const cureCow = () => {
-    updateStats({
-      health: 100 - cowStats.health,
-    });
+  const cureCow = async () => {
+    try {
+      await Game({
+        functionName: "healTheCow",
+      });
+    } catch (e) {
+      console.error("Error healing the cow", e);
+    }
   };
 
-  const putCowInBarn = () => {
-    updateStats({
-      happiness: 15,
-    });
-  };
+  const putCowInBarn = () => {};
 
   const collectMilk = async () => {
     try {
@@ -110,9 +85,9 @@ export const CowDashboard = ({ cowContractAddress }: cowContract) => {
         </div>
 
         <div className="p-4 rounded-lg bg-yellow-100">
-          <p className="text-sm text-yellow-800">Hunger {happyPoint?.toString()}</p>
+          <p className="text-sm text-yellow-800">Hunger</p>
           <div className="w-full bg-gray-200 rounded-full h-2.5 mt-2">
-            <div className="h-2.5 rounded-full bg-yellow-600" style={{ width: `${happyPoint}% ` }}></div>
+            <div className="h-2.5 rounded-full bg-yellow-600" style={{ width: `${100}% ` }}></div>
           </div>
         </div>
 

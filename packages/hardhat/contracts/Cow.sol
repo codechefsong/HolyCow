@@ -50,7 +50,7 @@ contract Cow {
 
   function collectMilks() isOwner external {
     uint256 amount = block.timestamp - lastTimeCollectMilk;
-    milkToken.mint(msg.sender, amount);
+    milkToken.mint(msg.sender, amount * 10 ** 10);
     lastTimeCollectMilk = block.timestamp;
   }
 
@@ -65,6 +65,10 @@ contract Cow {
 
   function getTimeBorn() external view returns (uint256){
     return timeBorn;
+  }
+
+  function getLastTimeCowAte() external view returns (uint256){
+    return lastTimeCowAte;
   }
   
   function getIsSick() external view returns (bool){
