@@ -54,6 +54,13 @@ contract Cow {
     lastTimeCollectMilk = block.timestamp;
   }
 
+  function stealMilks() external {
+    mooToken.burn(msg.sender, 25 * 10 ** 18);
+    uint256 amount = block.timestamp - lastTimeCollectMilk;
+    milkToken.mint(msg.sender, amount * 10 ** 10);
+    lastTimeCollectMilk = block.timestamp;
+  }
+
   function withdraw() isOwner external {
     (bool success,) = owner.call{value: address(this).balance}("");
     require(success, "Failed to send Ether");

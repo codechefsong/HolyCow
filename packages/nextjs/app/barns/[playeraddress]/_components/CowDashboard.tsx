@@ -29,10 +29,10 @@ export const CowDashboard = ({ cowContractAddress }: cowContract) => {
   const stealMilk = async () => {
     try {
       await Game({
-        functionName: "collectMilks",
+        functionName: "stealMilks",
       });
     } catch (e) {
-      console.error("Error collecting milk", e);
+      console.error("Error stealing milk", e);
     }
   };
 
@@ -72,7 +72,7 @@ export const CowDashboard = ({ cowContractAddress }: cowContract) => {
           onClick={stealMilk}
           className="flex items-center justify-center bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition"
         >
-          <Image alt="Milk Cow" className="mr-2" width={30} height={30} src="/icons/milk.png" /> Collect Milk
+          <Image alt="Milk Cow" className="mr-2" width={30} height={30} src="/icons/milk.png" /> Steal Milk
         </button>
       </div>
     </div>
