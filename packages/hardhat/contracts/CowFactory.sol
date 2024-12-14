@@ -11,6 +11,8 @@ contract CowFactory {
   MilkToken milkToken;
 
   mapping(address => address[]) public contractaddressToPlayerCowAddresses;
+  mapping(address => bool) public isPlayer;
+  address[] public players;
 
   event SpinWheelResult (
     address player,
@@ -25,6 +27,12 @@ contract CowFactory {
   function buyCow() external {
     Cow newCow = new Cow(msg.sender, address(milkToken), address(mooToken));
     contractaddressToPlayerCowAddresses[msg.sender].push(address(newCow));
+
+    if (!isPlayer[msg.sender]) {
+      players.push(msg.sender);
+    }
+
+    isPlayer[msg.sender] = true;
   }
 
   function spinWheel() public {
@@ -65,5 +73,9 @@ contract CowFactory {
 
   function getUserCowAddresses(address player) public view returns (address[] memory){
     return contractaddressToPlayerCowAddresses[player];
+  }
+
+  function getPlayers() public view returns (address[] memory){
+    return players;
   }
 }
