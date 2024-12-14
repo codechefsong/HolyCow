@@ -1,10 +1,13 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { HeartIcon, HomeIcon, TrophyIcon } from "@heroicons/react/24/solid";
 import { Address } from "~~/components/scaffold-eth";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 
 const PlayersBarnPage: React.FC = () => {
+  const router = useRouter();
+
   const { data: players } = useScaffoldReadContract({
     contractName: "CowFactory",
     functionName: "getPlayers",
@@ -51,6 +54,7 @@ const PlayersBarnPage: React.FC = () => {
                       hover:bg-green-600 
                       transition-colors
                     "
+                      onClick={() => router.push("/barns/" + player)}
                     >
                       View Barn
                     </button>
