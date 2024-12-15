@@ -1,3 +1,4 @@
+import { defineChain } from "viem";
 import * as chains from "viem/chains";
 
 export type ScaffoldConfig = {
@@ -7,6 +8,30 @@ export type ScaffoldConfig = {
   walletConnectProjectId: string;
   onlyLocalBurnerWallet: boolean;
 };
+
+const shape_sepolia = defineChain({
+  id: 11011,
+  name: "Shape Sepolia",
+  nativeCurrency: {
+    decimals: 18,
+    name: "Ether",
+    symbol: "ETH",
+  },
+  rpcUrls: {
+    default: {
+      http: ["https://sepolia.shape.network"],
+      webSocket: ["wss://sepolia.shape.network"],
+    },
+    public: {
+      http: ["https://sepolia.shape.network"],
+      webSocket: ["wss://sepolia.shape.network"],
+    },
+  },
+  blockExplorers: {
+    default: { name: "Explorer", url: "https://explorer-sepolia.shape.network/" },
+  },
+  network: "Shape Sepolia",
+});
 
 const scaffoldConfig = {
   // The networks on which your DApp is live
