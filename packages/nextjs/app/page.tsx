@@ -1,71 +1,113 @@
 "use client";
 
-import Link from "next/link";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import type { NextPage } from "next";
-import { useAccount } from "wagmi";
-import { BugAntIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { Address } from "~~/components/scaffold-eth";
+import { PlayIcon, StarIcon, TrophyIcon } from "@heroicons/react/24/solid";
 
-const Home: NextPage = () => {
-  const { address: connectedAddress } = useAccount();
+const LandingPage: NextPage = () => {
+  const router = useRouter();
+
+  const [email, setEmail] = useState("");
+
+  const features = [
+    {
+      icon: <StarIcon className="h-12 w-12 text-yellow-500" />,
+      title: "Manage Your Own Farm",
+      description: "Build and expand your dream cow farm from scratch. Breed, care for, and grow your herd.",
+    },
+    {
+      icon: <PlayIcon className="h-12 w-12 text-green-500" />,
+      title: "Interactive Gameplay",
+      description: "Engage with your cows through feeding, massaging, and caring for their health and happiness.",
+    },
+    {
+      icon: <TrophyIcon className="h-12 w-12 text-blue-500" />,
+      title: "Compete Globally",
+      description: "Climb the leaderboards, compete with other farmers, and become the top cow tycoon!",
+    },
+  ];
+
+  const handleEmailSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    alert(`Thank you for your interest! We"ll contact you at ${email}`);
+    setEmail("");
+  };
 
   return (
-    <>
-      <div className="flex items-center flex-col flex-grow pt-10">
-        <div className="px-5">
-          <h1 className="text-center">
-            <span className="block text-2xl mb-2">Welcome to</span>
-            <span className="block text-4xl font-bold">Scaffold-ETH 2</span>
-          </h1>
-          <div className="flex justify-center items-center space-x-2 flex-col sm:flex-row">
-            <p className="my-2 font-medium">Connected Address:</p>
-            <Address address={connectedAddress} />
-          </div>
-          <p className="text-center text-lg">
-            Get started by editing{" "}
-            <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-              packages/nextjs/app/page.tsx
-            </code>
+    <div className="bg-white">
+      {/* Hero Section */}
+      <div className="relative bg-gradient-to-br from-green-100 to-blue-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-24 text-center">
+          <h1 className="text-5xl font-extrabold text-gray-900 sm:text-6xl mb-6">Cow Farming Simulator</h1>
+          <p className="mt-3 max-w-2xl mx-auto text-xl text-gray-600 sm:mt-4">
+            Build, Manage, and Grow Your Ultimate Dairy Empire!
           </p>
-          <p className="text-center text-lg">
-            Edit your smart contract{" "}
-            <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-              YourContract.sol
-            </code>{" "}
-            in{" "}
-            <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-              packages/hardhat/contracts
-            </code>
-          </p>
-        </div>
-
-        <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
-          <div className="flex justify-center items-center gap-12 flex-col sm:flex-row">
-            <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
-              <BugAntIcon className="h-8 w-8 fill-secondary" />
-              <p>
-                Tinker with your smart contract using the{" "}
-                <Link href="/debug" passHref className="link">
-                  Debug Contracts
-                </Link>{" "}
-                tab.
-              </p>
-            </div>
-            <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
-              <MagnifyingGlassIcon className="h-8 w-8 fill-secondary" />
-              <p>
-                Explore your local transactions with the{" "}
-                <Link href="/blockexplorer" passHref className="link">
-                  Block Explorer
-                </Link>{" "}
-                tab.
-              </p>
-            </div>
+          <div className="mt-10 flex justify-center space-x-5">
+            <button
+              className="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-full shadow-lg text-white bg-green-600 hover:bg-green-700 transition"
+              onClick={() => router.push("/barns")}
+            >
+              Play Now
+            </button>
+            <a
+              href="#features"
+              className="inline-flex items-center px-8 py-3 border border-gray-300 text-base font-medium rounded-full shadow-lg text-gray-700 bg-white hover:bg-gray-50 transition"
+            >
+              Learn More
+            </a>
           </div>
         </div>
       </div>
-    </>
+
+      <div id="features" className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="lg:text-center">
+            <h2 className="text-base text-green-600 font-semibold tracking-wide uppercase">Features</h2>
+            <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+              Your Cow Farming Adventure Awaits
+            </p>
+          </div>
+
+          <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-8">
+            {features.map((feature, index) => (
+              <div key={index} className="text-center p-6 bg-gray-50 rounded-xl hover:shadow-lg transition">
+                <div className="flex justify-center mb-4">{feature.icon}</div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
+                <p className="text-gray-600">{feature.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-gray-100 py-16">
+        <div className="max-w-md mx-auto text-center px-4">
+          <h2 className="text-3xl font-extrabold text-gray-900 mb-6">Stay Updated</h2>
+          <p className="text-gray-600 mb-8">
+            Join our newsletter and be the first to know about new features, updates, and exclusive offers!
+          </p>
+
+          <form onSubmit={handleEmailSubmit} className="space-y-4">
+            <input
+              type="email"
+              placeholder="Enter your email"
+              required
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+            />
+            <button
+              type="submit"
+              className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition"
+            >
+              Sign Up
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
   );
 };
 
-export default Home;
+export default LandingPage;

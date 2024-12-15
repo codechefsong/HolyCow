@@ -23,21 +23,21 @@ const CowNFTPage: NextPage = () => {
       id: 1,
       name: "Moo-na Lisa",
       breed: "Holstein",
-      price: 0.5,
+      price: 0.001,
       traits: ["Artistic", "Milky Way Champion"],
     },
     {
       id: 2,
       name: "Beef-casso",
       breed: "Angus",
-      price: 0.75,
+      price: 0.002,
       traits: ["Creative", "Champion Grazer"],
     },
     {
       id: 3,
       name: "Van Gogh-gh",
       breed: "Jersey",
-      price: 1.0,
+      price: 0.003,
       traits: ["Starry Night Winner", "Rare Coat"],
     },
   ];
@@ -47,7 +47,7 @@ const CowNFTPage: NextPage = () => {
       await Game({
         functionName: "buyCow",
       });
-      alert(`Purchasing ${cow.name} for ${cow.price} ETH`);
+      console.log(cow);
     } catch (e) {
       console.error("Error spinning the wheel", e);
     }
