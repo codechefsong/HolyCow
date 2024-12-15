@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Address } from "~~/components/scaffold-eth";
 import { useScaffoldReadContractWithContractAddress } from "~~/hooks/scaffold-eth/useScaffoldReadContractWithContractAddress";
 import { useScaffoldWriteContractWithContractAddress } from "~~/hooks/scaffold-eth/useScaffoldWriteContractWithContractAddress";
+import { formatTime } from "~~/utils/time";
 
 type cowContract = {
   cowContractAddress: string;
@@ -26,6 +27,13 @@ export const CowDashboard = ({ cowContractAddress }: cowContract) => {
     functionName: "getIsSick",
   });
 
+  const { data: lastTimeCowAte } = useScaffoldReadContractWithContractAddress({
+    contractName: "Cow",
+    // @ts-ignore
+    contractAddress: cowContractAddress,
+    functionName: "getLastTimeCowAte",
+  });
+
   const stealMilk = async () => {
     try {
       await Game({
@@ -35,6 +43,8 @@ export const CowDashboard = ({ cowContractAddress }: cowContract) => {
       console.error("Error stealing milk", e);
     }
   };
+
+  const timeLeft = Math.floor(Date.now() / 1000) - Number(lastTimeCowAte);
 
   return (
     <div className="p-6">
@@ -75,6 +85,7 @@ export const CowDashboard = ({ cowContractAddress }: cowContract) => {
           <Image alt="Milk Cow" className="mr-2" width={30} height={30} src="/icons/milk.png" /> Steal Milk
         </button>
       </div>
+      <p>{formatTime(timeLeft)} Last time to collect milk</p>
     </div>
   );
 };
