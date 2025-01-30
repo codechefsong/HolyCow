@@ -20,6 +20,13 @@ export const CowDashboard = ({ cowContractAddress }: cowContract) => {
     functionName: "getHappyPoint",
   });
 
+  const { data: healthPoint } = useScaffoldReadContractWithContractAddress({
+    contractName: "Cow",
+    // @ts-ignore
+    contractAddress: cowContractAddress,
+    functionName: "getHealth",
+  });
+
   const { data: isSick } = useScaffoldReadContractWithContractAddress({
     contractName: "Cow",
     // @ts-ignore
@@ -88,16 +95,16 @@ export const CowDashboard = ({ cowContractAddress }: cowContract) => {
       </div>
       <div className="grid grid-cols-3 gap-4 mb-6">
         <div className="p-4 rounded-lg bg-green-100">
-          <p className="text-sm text-green-800">Health</p>
+          <p className="text-sm text-green-800">Health {healthPoint?.toString()}</p>
           <div className="w-full bg-gray-200 rounded-full h-2.5 mt-2">
-            <div className="h-2.5 rounded-full bg-green-600" style={{ width: isSick ? "20%" : "100%" }}></div>
+            <div className="h-2.5 rounded-full bg-green-600" style={{ width: healthPoint?.toString() }}></div>
           </div>
         </div>
 
         <div className="p-4 rounded-lg bg-yellow-100">
           <p className="text-sm text-yellow-800">Hunger</p>
           <div className="w-full bg-gray-200 rounded-full h-2.5 mt-2">
-            <div className="h-2.5 rounded-full bg-yellow-600" style={{ width: `${100}% ` }}></div>
+            <div className="h-2.5 rounded-full bg-yellow-600" style={{ width: `${100}%` }}></div>
           </div>
         </div>
 

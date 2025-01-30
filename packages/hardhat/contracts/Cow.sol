@@ -10,6 +10,7 @@ contract Cow {
 
   address public immutable owner;
   uint256 public happyPoint;
+  uint256 public healthPoint;
   uint256 public timeBorn;
   uint256 public lastTimeCowAte;
   uint256 public lastTimeCollectMilk;
@@ -28,6 +29,7 @@ contract Cow {
     timeBorn = block.timestamp;
     lastTimeCowAte = block.timestamp;
     lastTimeCollectMilk = block.timestamp;
+    healthPoint = 100;
   }
 
   receive() external payable {}
@@ -45,7 +47,12 @@ contract Cow {
 
   function healTheCow() isOwner external {
     mooToken.burn(msg.sender, 50 * 10 ** 18);
+    healthPoint += 50;
     isSick = false;
+
+    if (healthPoint > 100) {
+      healthPoint = 100;
+    }
   }
 
   function collectMilks() isOwner external {
@@ -68,6 +75,10 @@ contract Cow {
 
   function getHappyPoint() external view returns (uint256){
     return happyPoint;
+  }
+
+  function getHealth() external view returns (uint256){
+    return healthPoint;
   }
 
   function getTimeBorn() external view returns (uint256){
