@@ -24,8 +24,8 @@ contract CowFactory {
     milkToken = MilkToken(_milkTokenAddress);
   }
 
-  function buyCow() external {
-    Cow newCow = new Cow(msg.sender, address(milkToken), address(mooToken));
+  function buyCow(string memory _name) external {
+    Cow newCow = new Cow(msg.sender, address(milkToken), address(mooToken), _name);
     contractaddressToPlayerCowAddresses[msg.sender].push(address(newCow));
 
     if (!isPlayer[msg.sender]) {

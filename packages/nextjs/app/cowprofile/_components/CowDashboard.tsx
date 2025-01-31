@@ -27,11 +27,18 @@ export const CowDashboard = ({ cowContractAddress }: cowContract) => {
     functionName: "getHealth",
   });
 
-  const { data: isSick } = useScaffoldReadContractWithContractAddress({
+  // const { data: isSick } = useScaffoldReadContractWithContractAddress({
+  //   contractName: "Cow",
+  //   // @ts-ignore
+  //   contractAddress: cowContractAddress,
+  //   functionName: "getIsSick",
+  // });
+
+  const { data: name } = useScaffoldReadContractWithContractAddress({
     contractName: "Cow",
     // @ts-ignore
     contractAddress: cowContractAddress,
-    functionName: "getIsSick",
+    functionName: "getCowName",
   });
 
   const { data: lastTimeCowAte } = useScaffoldReadContractWithContractAddress({
@@ -87,6 +94,7 @@ export const CowDashboard = ({ cowContractAddress }: cowContract) => {
 
   return (
     <div className="p-6">
+      <h2>{name}</h2>
       <div className="flex justify-between items-center mb-4">
         <h1>
           <Address address={cowContractAddress} />

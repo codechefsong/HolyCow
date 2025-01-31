@@ -14,6 +14,7 @@ contract Cow {
   uint256 public timeBorn;
   uint256 public lastTimeCowAte;
   uint256 public lastTimeCollectMilk;
+  string public name;
   bool public isSick;
 
   modifier isOwner() {
@@ -21,11 +22,12 @@ contract Cow {
     _;
   }
 
-  constructor(address _owner, address _milkTokenAddress, address _mooTokenAddress) {
+  constructor(address _owner, address _milkTokenAddress, address _mooTokenAddress, string memory _name) {
     milkToken = MilkToken(_milkTokenAddress);
     mooToken = M000Token(_mooTokenAddress);
     
     owner = _owner;
+    name = _name;
     timeBorn = block.timestamp;
     lastTimeCowAte = block.timestamp;
     lastTimeCollectMilk = block.timestamp;
@@ -87,6 +89,10 @@ contract Cow {
 
   function getLastTimeCowAte() external view returns (uint256){
     return lastTimeCowAte;
+  }
+
+  function getCowName() external view returns (string memory){
+    return name;
   }
   
   function getIsSick() external view returns (bool){
